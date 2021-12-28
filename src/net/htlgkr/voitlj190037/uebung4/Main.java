@@ -237,7 +237,7 @@ public class Main {
             double yB = y.getB();
 
             Number solution = new Number();
-            solution.setA(xA * yB);     //Kreuzprodukt von 2 dimensionalen Vektoren ist mathematisch nicht möglich
+            solution.setA(xA * yB);     //Kreuzprodukt von 2-dimensionalen Vektoren ist mathematisch unmöglich
             solution.setB(xB * yA);
             return solution;
         };
@@ -263,6 +263,7 @@ public class Main {
             double yA = y.getA();
             double yB = y.getB();
 
+            //Zum Nachlesen: https://www.frustfrei-lernen.de/mathematik/komplexe-zahlen-addieren-addition.html
             Number solution = new Number();
             solution.setA(xA + yA);
             solution.setB(xB + yB);
@@ -275,6 +276,7 @@ public class Main {
             double yA = y.getA();
             double yB = y.getB();
 
+            //Zum Nachlesen: https://www.frustfrei-lernen.de/mathematik/komplexe-zahlen-subtrahieren-subtraktion.html
             Number solution = new Number();
             solution.setA(xA - yA);
             solution.setB(xB - yB);
@@ -290,6 +292,7 @@ public class Main {
 
             double[] interimResults = new double[4];
 
+            //Zum Nachlesen: https://www.frustfrei-lernen.de/mathematik/komplexe-zahlen-multiplikation-multiplizieren.html
             //Beispiel Rechnung: (5-2i) * (3+4i)
             //Schritt 1: Jedes mit jedem multiplizieren
             //5 * 3 + 5 * 4i + (-2i) * 3 + (-2i) * 4i =
@@ -323,9 +326,31 @@ public class Main {
             double yA = y.getA();
             double yB = y.getB();
 
+            double[] interimResultsNum = new double[4];     //Zwischenergebnisse Zähler
+            double[] interimResultsDen = new double[4];     //Zwischenergebnisse Nenner
+
+            //Zum Nachlesen: https://www.frustfrei-lernen.de/mathematik/komplexe-zahlen-division-dividieren.html
+            interimResultsNum[0] = xA * yA;
+            interimResultsNum[1] = xA * (yB * (-1));    //Vorzeichen muss geändert werden: + wird -, - wird +
+            interimResultsNum[2] = xB * yA;
+            interimResultsNum[3] = xB * (yB * (-1));
+
+            interimResultsDen[0] = yA * yA;
+            interimResultsDen[1] = yA * (yB * (-1));
+            interimResultsDen[2] = yB * yA;
+            interimResultsDen[3] = yB * (yB * (-1));
+
+            interimResultsNum[1] = interimResultsNum[1] + interimResultsNum[2];
+            interimResultsNum[2] = interimResultsNum[3] * (-1);
+            interimResultsNum[0] = interimResultsNum[0] + interimResultsNum[2];
+
+            interimResultsDen[1] = interimResultsDen[1] + interimResultsDen[2];
+            interimResultsDen[2] = interimResultsDen[3] * (-1);
+            interimResultsDen[0] = interimResultsDen[0] + interimResultsDen[2];
+
             Number solution = new Number();
-            solution.setA((xA * yA) / xB);      //basiert nicht auf Skalarprodukt sondern auf skalare Multiplikation
-            solution.setB((xA * yB) / xB);
+            solution.setA(interimResultsNum[0]);    //imaginärer Teil (interimResultsNum[1]) kann wegen fehlendem Platz in Number Objekt nicht zurückgegeben werden
+            solution.setB(interimResultsDen[0]);    //z.B. Ergebnis: (-10 + 11i)/17; Ausgabe: -10/17
             return solution;
         };
         return new ComplexCalculator(ccAdd, ccSubtract, ccMultiply, ccDivide);

@@ -44,7 +44,7 @@ public class NumberTester {
                         System.out.println((palindromeTester.testNumber(Integer.parseInt(parts[1]))) ? "PALINDROME" : "NO PALINDROME");
                         break;
                     default:
-                        System.out.println("ERROR");
+                        System.out.println("ERROR: File contains incorrect values.");
                 }
             }
         } catch (IOException e) {
